@@ -24,15 +24,40 @@ stack:
 	app em react para consumir a api;
 	banco de dados em firebase para controlar cadastro e login;
 
+tabelas do banco:
+
+	MYSQL
+		veiculo:
+			id
+			modelo
+			montadora
+			ano
+			cor
+			placa
+			status
+	
+	firebase
+		usuario:
+			id	
+			nome
+			email
+			senha
+			arquivo_imagem
+			tipo_arquivo
+
+
 deploy:
 	a plataforma será hospedada em uma conta da hostinger cedida pelo orientador;
 
 observações:
 	o banco de dados tem que ter, preferivelmente, uma tabela com no mínimo 4 campos;
 
+membros do grupo:
+	Vinicius;
+	Arthur;
+	Nicolly;
 
-
-
-
-
-	
+atribuições:
+	API: Vinicius,
+	WEB: Arthur,
+	APP: Nicolly
