@@ -1,0 +1,38 @@
+atividade final web III
+
+tema:
+	plataforma de gerenciamento de veículos de uma concessionária
+
+nome do projeto
+	TrackDrive
+
+objetivos. A plataforma deve ser capaz de:
+	cadastro de usuário via firebase;
+	login de usuário via firebase;
+	cadastrar veículos na base de dados;
+	listar veículos cadastrados;
+	buscar veículo por id;
+	editar veículo;
+	deletar veículo;
+	trocar o status do veículo de 'disponivel' para 'alugado';
+	listar veículos disponiveis;
+	listar veículos alugados;
+
+stack:
+	api em laravel para gerenciar o banco de dados;
+	api em laravel para entregar o front-end;
+	app em react para consumir a api;
+	banco de dados em firebase para controlar cadastro e login;
+
+deploy:
+	a plataforma será hospedada em uma conta da hostinger cedida pelo orientador;
+
+observações:
+	o banco de dados tem que ter, preferivelmente, uma tabela com no mínimo 4 campos;
+
+
+
+
+
+
+	
