@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Veiculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class VeiculoController extends Controller
 {
@@ -45,12 +46,12 @@ class VeiculoController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'modelo' => 'required',
-                'montadora' => 'required',
-                'ano' => 'required',
-                'cor' => 'required',
-                'placa' => 'required',
-                'status' => 'required',
+                'modelo' => 'required|string|max:255',
+                'montadora' => 'required|string|max:255',
+                'ano' => 'required|numeric|digits:4',
+                'cor' => 'required|string|max:255',
+                'placa' => 'required|string|max:7|unique:veiculos,placa',
+                'status' => 'required|string|in:disponivel,alugado',
             ]);
 
             if ($validator->fails()) {
@@ -124,12 +125,17 @@ class VeiculoController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'modelo' => 'required',
-                'montadora' => 'required',
-                'ano' => 'required',
-                'cor' => 'required',
-                'placa' => 'required',
-                'status' => 'required',
+                'modelo' => 'required|string|max:255',
+                'montadora' => 'required|string|max:255',
+                'ano' => 'required|numeric|digits:4',
+                'cor' => 'required|string|max:255',
+                'placa' => [
+                    'required',
+                    'string',
+                    'size:7',
+                    Rule::unique('veiculos', 'placa')->ignore($request->route('id')),  // Regra para não dar conflito ao atualizar placa que é uma chave única
+                ],
+                'status' => 'required|string|in:disponivel,alugado',
             ]);
 
             if ($validator->fails()) {
