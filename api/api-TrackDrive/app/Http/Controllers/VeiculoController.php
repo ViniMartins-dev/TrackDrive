@@ -29,12 +29,12 @@ class VeiculoController extends Controller
                 ], 404);
             }
 
-        } catch (\Throwable $e) {
+        } catch (Throwable $th) {
 
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao listar os veículos.',
-                'error' => $e->getMessage(),
+                'error' => $th->getMessage(),
             ], 500);
 
         }
@@ -71,12 +71,12 @@ class VeiculoController extends Controller
                 ], 201);
             }
 
-        } catch (\Throwable $e) {
+        } catch (Throwable $th) {
 
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao cadastrar veículo.',
-                'errors' => $e,
+                'errors' => $th,
             ], 500);
 
         }
@@ -101,74 +101,97 @@ class VeiculoController extends Controller
                 ], 404);
             }
 
-        } catch (\Throwable $e) {
+        } catch (Throwable $th) {
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao buscar veículo.',
-                'errors' => $e,
+                'errors' => $th,
             ], 500);
         }
     }
 
     public function update(Request $request, $id)
     {
-        $veiculo = Veiculo::find($id);
+        try {
 
-        if (!$veiculo) {
+           $veiculo = Veiculo::find($id);
+
+            if (!$veiculo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Veículo não encontrado.',
+                ], 404);
+            }
+
+            $validator = Validator::make($request->all(), [
+                'modelo' => 'required',
+                'montadora' => 'required',
+                'ano' => 'required',
+                'cor' => 'required',
+                'placa' => 'required',
+                'status' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Campos inválidos!',
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+
+            $veiculo->modelo = $request->modelo;
+            $veiculo->montadora = $request->modelo;
+            $veiculo->ano = $request->ano;
+            $veiculo->cor = $request->cor;
+            $veiculo->placa = $request->placa;
+            $veiculo->status = $request->status;
+
+            if ($veiculo->save()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Veículo atualizado.',
+                    'data' => $veiculo
+                ], 200);
+            } else {
+                throw new Exception('Erro ao atualizar veículo');
+            }
+
+        } catch (Exeption $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Veículo não encontrado.',
-            ], 404);
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ], 500);
         }
-
-        $validator = Validator::make($request->all(), [
-            'modelo' => 'required',
-            'montadora' => 'required',
-            'ano' => 'required',
-            'cor' => 'required',
-            'placa' => 'required',
-            'status' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Campos inválidos!',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
-
-        /* fazer aqui o 
-        $regBook->sigla = $request->sigla;
-        $regBook->nome = $request->nome;
-        $regBook->valor = $request->valor; */
-
-        if ($veiculo->save()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Veículo atualizado.',
-                'data' => $veiculo
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao atualizar o veículo.'
-            ], 500);
-        }
-
     }
 
-    public function destroy(Veiculo $veiculo)
+    public function destroy($id)
     {
         try {
-            $veiculo->delete();
-            return response()->json(['message' => 'Veículo excluído com sucesso'], 200);
-        } catch (\Throwable $erro) {
+
+            $veiculo = Veiculo::find($id);
+
+            if (!$veiculo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Veículo não encontrado.',
+                ], 404);
+            }
+
+            if ($veiculo->delete()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Veículo deletado.',
+                ], 200);
+            } else {
+                throw new Exception('Erro ao excluir o veículo');
+            }
+
+        } catch (Exeption $e) {
             return response()->json([
                 'message' => 'Erro ao excluir o veículo',
-                'error' => $erro->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
-
     }
 }
