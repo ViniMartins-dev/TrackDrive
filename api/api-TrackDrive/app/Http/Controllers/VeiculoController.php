@@ -51,7 +51,6 @@ class VeiculoController extends Controller
                 'ano' => 'required|numeric|digits:4',
                 'cor' => 'required|string|max:255',
                 'placa' => 'required|string|max:7|unique:veiculos,placa',
-                'status' => 'required|string|in:disponivel,alugado',
             ]);
 
             if ($validator->fails()) {
@@ -197,6 +196,50 @@ class VeiculoController extends Controller
             return response()->json([
                 'message' => 'Erro ao excluir o veículo',
                 'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function patch($id){
+        try {
+
+            $veiculo = Veiculo::find($id);
+
+            if (!$veiculo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Veículo não encontrado.',
+                ], 404);
+            }
+
+            if ( $veiculo->status == 'disponivel') {
+
+                $veiculo->status = 'alugado';
+
+                $veiculo->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Status do veículo alterado para {alugado}.',
+                ], 200);
+            } else {
+
+                $veiculo->status = 'disponivel';
+
+                $veiculo->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Status do veículo alterado para {disponivel}.',
+                ], 200);
+            }
+
+
+
+        } catch (\Throwable $th) {
+           return response()->json([
+                'message' => 'Erro ao alterar o status do veículo',
+                'error' => $th->getMessage(),
             ], 500);
         }
     }

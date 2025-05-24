@@ -9,3 +9,4 @@ Route::post('/veiculo', [VeiculoController::class, 'store']);                   
 Route::get('/veiculo/{id}', [VeiculoController::class, 'show']);                // Rota para pegar um veículo pelo id
 Route::put('/veiculo/{id}', [VeiculoController::class, 'update']);              // Rota para atualizar um veículo pelo id
 Route::delete('/veiculo/{id}', [VeiculoController::class, 'destroy']);          // Rota para deletar um veículo pelo id
+Route::patch('/veiculo/{id}', [VeiculoController::class, 'patch']);             // Rota para alterar o status do veículo
