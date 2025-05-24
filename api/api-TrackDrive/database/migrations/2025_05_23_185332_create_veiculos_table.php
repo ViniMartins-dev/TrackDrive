@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('ano');
             $table->string('cor');
             $table->string('placa');
-            $table->string('status');
+            $table->enum('status', ['disponivel', 'alugado'])->default('disponivel');
             $table->timestamps();
         });
     }
