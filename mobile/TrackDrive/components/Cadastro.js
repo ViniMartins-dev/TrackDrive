@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, StyleSheet, TextInput, Button } from 'react-native';
-/*import { createCripto } from './Api';*/
 import { StatusBar } from 'expo-status-bar';
 
 export default function Cadastro({ navigation }) {
-  /* Descomente quando quiser usar os campos de entrada */
-  // const [nomeCripto, setNomeCripto] = useState('');
-  // const [siglaCripto, setSiglaCripto] = useState('');
+   const [nomeCar, setNomeCar] = useState('');
+   const [siglaCar, setSiglaCar] = useState('');
 
   const handleCadastro = () => {
-    /* Descomente quando quiser montar os dados a serem enviados */
-    // const newCripto = {
-    //   nomeCripto,
-    //   siglaCripto,
-    // };
+    if (!nomeCar || !siglaCar) {
+      alert('Preencha todos os campos');
+      return;
+    }
 
     Alert.alert(
       'Confirmação',
@@ -22,8 +19,10 @@ export default function Cadastro({ navigation }) {
         { text: 'Cancelar', style: 'cancel' },
         {
           text: 'Cadastrar',
-          // Descomente abaixo quando for usar a função da API
-          // onPress: () => createCripto(newCripto, navigation),
+          onPress: () => {
+            const newCar = { nome: nomeCar, sigla: siglaCar};
+            createCar(newCar, navigation);
+          },
         },
       ]
     );
@@ -38,14 +37,14 @@ export default function Cadastro({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Nome da Cripto"
-        /* value={nomeCripto}
-        onChangeText={setNomeCripto} */
+        value={nomeCar}
+        onChangeText={setNomeCar}
       />
       <TextInput
         style={styles.input}
         placeholder="Sigla da Cripto"
-        /* value={siglaCripto}
-        onChangeText={setSiglaCripto} */
+        value={siglaCar}
+        onChangeText={setSiglaCar}
       />
       </View>
 

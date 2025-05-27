@@ -1,4 +1,4 @@
-import React, { useState, UseEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, FlatList, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
 /*import {fetchApi, deleteApi} from './Api'/*/
@@ -30,20 +30,14 @@ export default function Track({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.track}>
-                Track
+                TRACK
             </Text>
             <Text style={styles.drive}>
-                Drive
+                DRIVE
             </Text>
             <Image
-                source={require('../assets/car.png')}
+                source={require('../assets/carnew.png')}
                 style={styles.image}
-            />
-            <Button
-                title="INICIAR"
-                onPress={() => navigation.navigate('Home')}
-                color="#007AFF"
-                style={styles.button}
             />
         </View>
     );
@@ -52,23 +46,47 @@ export default function Track({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#47A9FF',
-        alignItems: 'center',
-        justifyContent: 'center'
+        backgroundColor: '#3a97de',
     },
     track: {
-        fontSize: 50,
+        fontSize: 80,
         color: 'white',
         fontWeight: '700',
+        textAlign: 'center',
+        marginTop: 70,
+        textShadowColor: 'rgba(0, 0, 0, 0.25)', // sombra preta translúcida
+        textShadowOffset: { width: 0, height: 1 }, // sombra sutil pra baixo
+        textShadowRadius: 1.5, // desfoque leve
 
     },
     drive: {
-        fontSize: 30,
+        fontSize: 50,
         color: 'white',
         fontWeight: '700',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.25)', // sombra preta translúcida
+        textShadowOffset: { width: 0, height: 1 }, // sombra sutil pra baixo
+        textShadowRadius: 1.5, // desfoque leve
+
     },
     image: {
-        width: 250,
+        marginLeft: 10,
+        width: 500,
         height: 200,
+        justifyContent: 'center',
+        marginTop: 130
+    },
+    button: {
+        backgroundColor: '#005BBB',
+        padding: 13,
+        borderRadius: 5,
+        marginTop: 20,
+        width: 100,
+        height: 50,
+    },
+    buttoncontent: {
+        color: "white",
+        fontWeight: 800,
+        fontSize: 18,
     }
 })
