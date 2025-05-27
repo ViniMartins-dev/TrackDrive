@@ -1,0 +1,252 @@
+#rodar no site: https://editor.swagger.io/
+openapi: 3.0.0
+info:
+  title: TrackDrive API
+  description: API para gerenciar veículos na plataforma TrackDrive, permitindo listar, cadastrar, atualizar, excluir e alterar o status dos veículos.
+  version: 1.0.0
+paths:
+  /veiculo:
+    get:
+      summary: Listar todos os veículos
+      description: Retorna uma lista de todos os veículos cadastrados no sistema TrackDrive.
+      responses:
+        '200':
+          description: Lista de veículos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        modelo:
+                          type: string
+                        montadora:
+                          type: string
+                        ano:
+                          type: integer
+                        cor:
+                          type: string
+                        placa:
+                          type: string
+                        status:
+                          type: string
+                          enum:
+                            - disponível
+                            - alugado
+                  total:
+                    type: integer
+        '404':
+          description: Nenhum veículo encontrado
+
+    post:
+      summary: Cadastrar um novo veículo
+      description: Cadastra um novo veículo na plataforma TrackDrive.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - modelo
+                - montadora
+                - ano
+                - cor
+                - placa
+              properties:
+                modelo:
+                  type: string
+                montadora:
+                  type: string
+                ano:
+                  type: integer
+                cor:
+                  type: string
+                placa:
+                  type: string
+      responses:
+        '201':
+          description: Veículo criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      modelo:
+                        type: string
+                      montadora:
+                        type: string
+                      ano:
+                        type: integer
+                      cor:
+                        type: string
+                      placa:
+                        type: string
+                      status:
+                        type: string
+                        enum:
+                          - disponível
+                          - alugado
+        '400':
+          description: Erro nos campos fornecidos
+
+  /veiculo/{id}:
+    get:
+      summary: Obter detalhes de um veículo
+      description: Retorna os detalhes de um veículo específico, identificado pelo ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do veículo a ser retornado
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalhes do veículo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      modelo:
+                        type: string
+                      montadora:
+                        type: string
+                      ano:
+                        type: integer
+                      cor:
+                        type: string
+                      placa:
+                        type: string
+                      status:
+                        type: string
+                        enum:
+                          - disponível
+                          - alugado
+        '404':
+          description: Veículo não encontrado
+
+    put:
+      summary: Atualizar um veículo
+      description: Atualiza os dados de um veículo específico baseado no ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do veículo a ser atualizado
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelo:
+                  type: string
+                montadora:
+                  type: string
+                ano:
+                  type: integer
+                cor:
+                  type: string
+                placa:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - disponível
+                    - alugado
+      responses:
+        '200':
+          description: Veículo atualizado com sucesso
+        '400':
+          description: Campos inválidos
+        '404':
+          description: Veículo não encontrado
+
+    delete:
+      summary: Deletar um veículo
+      description: Deleta um veículo específico, identificado pelo ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do veículo a ser deletado
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Veículo deletado com sucesso
+        '404':
+          description: Veículo não encontrado
+
+    patch:
+      summary: Alterar o status do veículo
+      description: Altera o status de um veículo (disponível ou alugado) sem precisar de parâmetros no corpo da requisição. A cada chamada, o status alterna entre os valores disponíveis e alugado.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do veículo a ter seu status alterado
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Status do veículo alterado com sucesso
+        '404':
+          description: Veículo não encontrado
+
+components:
+  schemas:
+    Veiculo:
+      type: object
+      properties:
+        id:
+          type: integer
+        modelo:
+          type: string
+        montadora:
+          type: string
+        ano:
+          type: integer
+        cor:
+          type: string
+        placa:
+          type: string
+        status:
+          type: string
+          enum:
+            - disponível
+            - alugado
+          description: Status atual do veículo
