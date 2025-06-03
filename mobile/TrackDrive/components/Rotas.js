@@ -22,7 +22,6 @@ function TabRoutes() {
           if (route.name === 'Track') iconName = 'map';
           else if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Cadastro') iconName = 'plus';
-          else if (route.name === 'Atualizar') iconName = 'plus';
 
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -34,8 +33,6 @@ function TabRoutes() {
       <Tab.Screen name="Track" component={Track} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Cadastro" component={Cadastro} />
-      <Tab.Screen name="Atualizar" component={Atualizar} />
-
     </Tab.Navigator>
   );
 }

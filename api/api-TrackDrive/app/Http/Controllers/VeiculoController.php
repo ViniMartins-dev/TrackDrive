@@ -51,6 +51,7 @@ class VeiculoController extends Controller
                 'ano' => 'required|numeric|digits:4',
                 'cor' => 'required|string|max:255',
                 'placa' => 'required|string|max:7|unique:veiculos,placa',
+                
             ]);
 
             if ($validator->fails()) {
