@@ -58,6 +58,20 @@ export default function Atualizar({ navigation, route }) {
     );
   };
 
+  const handleBack = () => {
+    Alert.alert(
+      'Confirmação',
+      'Deseja voltar a tela inicial? \nOs dados não salvos serão perdidos.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Voltar',
+          onPress: () => navigation.navigate('Tabs', { screen: 'Home' })
+        },
+      ]
+    );
+  }
+
   const enviarAtualizacao = async () => {
   setLoading(true);
 
@@ -75,7 +89,7 @@ export default function Atualizar({ navigation, route }) {
     await updateCar(id, updatedCar, navigation);
 
     // Emite evento para avisar que atualizou
-    navigation.navigate('Home', { updatedCar });  // ou só volta para home, sem params
+    navigation.navigate('Tabs', { screen: 'Home' })
 
   } catch (error) {
     Alert.alert('Erro ao atualizar', error.message);
@@ -88,6 +102,14 @@ export default function Atualizar({ navigation, route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Atualizar Veículo</Text>
+
+      
+      <TouchableOpacity
+        style={[styles.button, styles.backButton]}
+        onPress={handleBack}
+      >
+        <Icon name="mail-reply" size={20} color="#000" />
+      </TouchableOpacity>
 
       <View style={styles.forms}>
         <TextInput
@@ -165,6 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f7',
     paddingHorizontal: 20,
     paddingTop: 60,
+    height: ''
   },
   title: {
     fontSize: 34,
@@ -211,5 +234,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 17,
     fontWeight: '600',
+  },
+  backButton: {
+    backgroundColor: '#f9f9f9',
+    color: 'black',
+    borderRadius: '50%',
+    width: 50,
+    height: 50,
+    marginTop: 10,
+    display: 'inline-block',
   },
 });

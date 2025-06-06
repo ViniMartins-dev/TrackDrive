@@ -25,18 +25,20 @@ export default function Home({ navigation }) {
     try {
       await fetchCar(setRegistros);
     } catch (err) {
-      setError('Erro ao carregar os dados. Verifique a conexão com a API.');
+      if (!error.response.status === 404) {
+        setError('Erro ao carregar os dados. Verifique a conexão com a API.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-useFocusEffect(
-  React.useCallback(() => {
-    // Carregar dados toda vez que a tela ficar ativa (após atualizar)
-    loadData();
-  }, [])
-);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Carregar dados toda vez que a tela ficar ativa (após atualizar)
+      loadData();
+    }, [])
+  );
 
 
   useEffect(() => {
@@ -97,7 +99,7 @@ useFocusEffect(
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Veículos</Text>
+      <Text style={styles.title}>Veículos Cadastrados</Text>
       <StatusBar style="dark" />
       <FlatList
         style={styles.list}
@@ -148,17 +150,17 @@ useFocusEffect(
                 <Icon name="edit" size={20} color="#fff" />
               </TouchableOpacity>
               <Icon name="edit" size={20} color="#fff" />
+            </View>
           </View>
-          </View>
-  )
-}
+        )
+        }
       />
-  < TouchableOpacity
-style = { styles.floatingButton }
-onPress = {() => navigation.navigate('Cadastro')}
-activeOpacity = { 0.7}
-  >
-  <Icon name="plus" size={24} color="#fff" />
+      < TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate('Cadastro')}
+        activeOpacity={0.7}
+      >
+        <Icon name="plus" size={24} color="#fff" />
       </TouchableOpacity >
     </View >
   );
