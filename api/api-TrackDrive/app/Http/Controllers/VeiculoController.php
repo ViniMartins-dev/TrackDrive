@@ -125,17 +125,16 @@ class VeiculoController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'modelo' => 'required|string|max:255',
-                'montadora' => 'required|string|max:255',
-                'ano' => 'required|numeric|digits:4',
-                'cor' => 'required|string|max:255',
+                'modelo' => 'string|max:255',
+                'montadora' => 'string|max:255',
+                'ano' => 'numeric|digits:4',
+                'cor' => 'string|max:255',
                 'placa' => [
-                    'required',
                     'string',
                     'size:7',
                     Rule::unique('veiculos', 'placa')->ignore($request->route('id')),  // Regra para não dar conflito ao atualizar placa que é uma chave única
                 ],
-                'status' => 'required|string|in:disponivel,alugado',
+                'status' => 'string|in:disponivel,alugado',
             ]);
 
             if ($validator->fails()) {
@@ -146,13 +145,14 @@ class VeiculoController extends Controller
                 ], 400);
             }
 
-            $veiculo->modelo = $request->modelo;
-            $veiculo->montadora = $request->modelo;
-            $veiculo->ano = $request->ano;
-            $veiculo->cor = $request->cor;
-            $veiculo->placa = $request->placa;
-            $veiculo->status = $request->status;
+            $campos = ['modelo', 'montadora', 'ano', 'cor', 'placa', 'status'];
 
+            foreach ($campos as $campo) {
+                if ($request->$campo) {
+                    $veiculo->$campo = $request->$campo;
+                }
+            }
+            
             if ($veiculo->save()) {
                 return response()->json([
                     'success' => true,
