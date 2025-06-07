@@ -3,34 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
 
-/* Route::get('/register', function () {
-    return view('register');
+// Rotas para veículos
+Route::prefix('veiculos')->group(function () {
+    Route::get('/', [WebController::class, 'index'])->name('trackdrive.index');                 // lista veículos
+    Route::get('/create', [WebController::class, 'create'])->name('trackdrive.create');         // formulário criar veículo
+    Route::post('/store', [WebController::class, 'store'])->name('trackdrive.store');           // salvar veículo
+    Route::get('/edit/{id}', [WebController::class, 'edit'])->name('trackdrive.edit');          // formulário editar veículo
+    Route::post('/update/{id}', [WebController::class, 'update'])->name('trackdrive.update');   // atualizar veículo
+    Route::get('/delete/{id}', [WebController::class, 'destroy'])->name('trackdrive.destroy');  // deletar veículo
 });
 
-Route::get('/login', function () {
-    return view('login');
+// Rotas para usuários
+Route::prefix('usuarios')->group(function () {
+    Route::get('/register', [WebController::class, 'register'])->name('user.register');         // cadastrar usuário
+    Route::get('/login', [WebController::class, 'login'])->name('user.login');                  // login do usuário
 });
-
-Route::get('/index', function () {
-    return view('index');
-});
-
-Route::get('/create', function () {
-    return view('create');
-});
-
-Route::get('/update', function () {
-    return view('update');
-}); */
-
-// controle de usuários
-    Route::get('/register',  [WebController::class, 'register'])->name('user.register');
-    Route::get('/login', [WebController::class, 'login'])->name('user.login');
-
-// controle de veículos
-    Route::get('/index', [WebController::class, 'index'])->name('trackdrive.index');
-    Route::get('/edit/{id}', [WebController::class, 'edit'])->name('trackdrive.edit');
-    Route::get('/delete/{id}', [WebController::class, 'destroy'])->name('trackdrive.destroy');
-
-    Route::post('/store', [WebController::class, 'store'])->name('Web.store');
-    Route::post('/update/{id}', [WebController::class, 'update'])->name('Web.update');
