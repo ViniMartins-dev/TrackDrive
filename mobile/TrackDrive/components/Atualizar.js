@@ -154,14 +154,6 @@ export default function Atualizar({ navigation, route }) {
           editable={!loading}
           placeholderTextColor="#8e8e93"
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Status"
-          value={statusCar}
-          onChangeText={setstatusCar}
-          editable={!loading}
-          placeholderTextColor="#8e8e93"
-        />
       </View>
 
       <View style={styles.buttonContainer}>

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StatusBar } from 'expo-status-bar';
-import { fetchCar, deleteCar } from '../components/Api';
+import { fetchCar, deleteCar, rentCar } from '../components/Api';
 import { useFocusEffect } from '@react-navigation/native';
 
 
@@ -59,6 +59,39 @@ export default function Home({ navigation }) {
       ]
     );
   };
+
+  const handleRent = (id, status) => {
+  if (status === 'disponivel') {
+    Alert.alert(
+      'Confirmação',
+      'Tem certeza de que deseja alugar esse carro?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Alugar',
+           onPress: async () => {
+              await rentCar(id);
+              //fazer dar refresh na home
+           }
+        },
+      ]
+    );
+  } else if (status === 'alugado') {
+    Alert.alert(
+      'Confirmação',
+      'Tem certeza de que deseja devolver esse carro?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Devolver',
+          onPress: () => rentCar(id),
+          //refresh da home
+        },
+      ]
+    );
+  }
+};
+
 
   if (loading) {
     return (
@@ -126,6 +159,13 @@ export default function Home({ navigation }) {
               Status: {item.status}
             </Text>
             <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={[styles.button, styles.rentButton]}
+                onPress={() => handleRent(item.id, item.status)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.rentText]}>{item.status === 'alugado' ? 'Devolver' : 'Alugar'}</Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.deleteButton]}
                 onPress={() => handleDelete(item.id)}
@@ -249,6 +289,14 @@ const styles = StyleSheet.create({
   },
   editButton: {
     backgroundColor: '#34c759', // verde típico iOS para editar
+  },
+  rentButton: {
+    backgroundColor: '#FFA500',
+  },
+  rentText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white'
   },
   floatingButton: {
     position: 'absolute',

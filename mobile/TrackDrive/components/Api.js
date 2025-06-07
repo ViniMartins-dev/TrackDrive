@@ -49,3 +49,12 @@ export const updateCar = async (id, updatedCar, navigation) => {
     alert('Erro ao atualizar. Tente novamente.');
   }
 };
+
+export const rentCar = async (id) => {
+  try {
+    await api.patch(`/veiculo/${id}`);
+  } catch (error) {
+    console.error('Erro ao alugar:', error);
+    alert('Erro ao alugar. Tente novamente.');
+  }
+}
