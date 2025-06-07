@@ -3,21 +3,21 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/register', function () {
-    return view('welcome');
+    return view('register');
 });
 
 Route::get('/login', function () {
-    return view('welcome');
+    return view('login');
 });
 
 Route::get('/index', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::get('/create', function () {
-    return view('welcome');
+    return view('create');
 });
 
 Route::get('/update', function () {
-    return view('welcome');
+    return view('update');
 });
