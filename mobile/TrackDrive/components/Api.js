@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://10.0.2.2:8000/api';
+const API_BASE_URL = 'https://webapptech.site/apitrackdrive/api/';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
