@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://webapptech.site/apitrackdrive/api/;
+const API_BASE_URL = 'https://webapptech.site/apitrackdrive/api/;'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -58,3 +58,4 @@ export const rentCar = async (id) => {
     alert('Erro ao alugar. Tente novamente.');
   }
 }
+

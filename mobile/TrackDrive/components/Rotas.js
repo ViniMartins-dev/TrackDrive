@@ -8,6 +8,8 @@ import Track from '../components/Track';
 import Home from '../components/Home';
 import Cadastro from '../components/Cadastro';
 import Atualizar from '../components/Atualizar';
+import CadastroP from '../components/CadastroP';
+import Perfil from '../components/Perfil';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,12 +29,13 @@ function TabRoutes() {
         },
         tabBarActiveTintColor: '#47A9FF',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false, 
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Track" component={Track} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Cadastro" component={Cadastro} />
+      <Tab.Screen name="Perfil" component={Perfil} />
     </Tab.Navigator>
   );
 }
@@ -42,8 +45,9 @@ export default function Rotas() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Tabs" component={TabRoutes} options={{ headerShown: false }} />
-
         <Stack.Screen name="Atualizar" component={Atualizar} options={{ headerShown: false }} />
+        <Stack.Screen name="CadastroP" component={CadastroP} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
