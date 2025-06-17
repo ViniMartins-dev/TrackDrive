@@ -1,26 +1,21 @@
-import axios from 'axios';
-
-const API_BASE_URL = 'https://webapptech.site/apitrackdrive/api/;'
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-});
+const API_BASE_URL = 'https://webapptech.site/apitrackdrive/api/';
 
 export const fetchCar = async (setRegistros) => {
   try {
-    const response = await api.get('/veiculo');
-    setRegistros(response.data.data); // ajuste conforme a estrutura do retorno
+    const response = await fetch(`${API_BASE_URL}veiculo`);
+    const data = await response.json();
+    setRegistros(data.data);
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
     throw error;
   }
 };
 
-
-
 export const deleteCar = async (id, setRegistros, registros) => {
   try {
-    await api.delete(`/veiculo/${id}`);
+    await fetch(`${API_BASE_URL}veiculo/${id}`, {
+      method: 'DELETE',
+    });
     const novosRegistros = registros.filter(item => item.id !== id);
     setRegistros(novosRegistros);
   } catch (error) {
@@ -30,7 +25,13 @@ export const deleteCar = async (id, setRegistros, registros) => {
 
 export const createCar = async (newCar, navigation) => {
   try {
-    await api.post('/veiculo', newCar);
+    await fetch(`${API_BASE_URL}veiculo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCar),
+    });
     alert('Cadastro realizado com sucesso!');
     navigation.goBack();
   } catch (error) {
@@ -41,7 +42,13 @@ export const createCar = async (newCar, navigation) => {
 
 export const updateCar = async (id, updatedCar, navigation) => {
   try {
-    await api.put(`/veiculo/${id}`, updatedCar);
+    await fetch(`${API_BASE_URL}veiculo/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedCar),
+    });
     alert('Atualização realizada com sucesso!');
     navigation.goBack();
   } catch (error) {
@@ -52,10 +59,11 @@ export const updateCar = async (id, updatedCar, navigation) => {
 
 export const rentCar = async (id) => {
   try {
-    await api.patch(`/veiculo/${id}`);
+    await fetch(`${API_BASE_URL}veiculo/${id}`, {
+      method: 'PATCH',
+    });
   } catch (error) {
     console.error('Erro ao alugar:', error);
     alert('Erro ao alugar. Tente novamente.');
   }
-}
-
+};
