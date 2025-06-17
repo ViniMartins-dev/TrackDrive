@@ -24,6 +24,7 @@ function TabRoutes() {
           if (route.name === 'Track') iconName = 'map';
           else if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Cadastro') iconName = 'plus';
+          else if (route.name === 'Perfil') iconName = 'user';
 
           return <Icon name={iconName} size={size} color={color} />;
         },
