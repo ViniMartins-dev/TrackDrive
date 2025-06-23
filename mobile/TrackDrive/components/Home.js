@@ -25,7 +25,7 @@ export default function Home({ navigation }) {
     try {
       await fetchCar(setRegistros);
     } catch (err) {
-      if (!error.response.status === 404) {
+      if (error.response.status === 404) {
         setError('Erro ao carregar os dados. Verifique a conexão com a API.');
       }
     } finally {
@@ -61,36 +61,46 @@ export default function Home({ navigation }) {
   };
 
   const handleRent = (id, status) => {
-  if (status === 'disponivel') {
-    Alert.alert(
-      'Confirmação',
-      'Tem certeza de que deseja alugar esse carro?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Alugar',
-           onPress: async () => {
+    if (status === 'disponivel') {
+      Alert.alert(
+        'Confirmação',
+        'Tem certeza de que deseja alugar esse carro?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          {
+            text: 'Alugar',
+            onPress: async () => {
               await rentCar(id);
-              //fazer dar refresh na home
-           }
-        },
-      ]
-    );
-  } else if (status === 'alugado') {
-    Alert.alert(
-      'Confirmação',
-      'Tem certeza de que deseja devolver esse carro?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Devolver',
-          onPress: () => rentCar(id),
-          //refresh da home
-        },
-      ]
-    );
-  }
-};
+              setLoading(true);
+              setTimeout(() => {
+                loadData();
+              }, 300);
+              setLoading(false);
+            }
+          },
+        ]
+      );
+    } else if (status === 'alugado') {
+      Alert.alert(
+        'Confirmação',
+        'Tem certeza de que deseja devolver esse carro?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          {
+            text: 'Devolver',
+            onPress: async () => {
+              await rentCar(id);
+              setLoading(true);
+              setTimeout(() => {
+                loadData();
+              }, 300);
+              setLoading(false);
+            }
+          },
+        ]
+      );
+    }
+  };
 
 
   if (loading) {
@@ -138,8 +148,17 @@ export default function Home({ navigation }) {
         style={styles.list}
         data={registro}
         keyExtractor={(item) => item.id.toString()}
+
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
+          <View style={[styles.itemContainer, {
+            borderColor:
+              item.status === 'disponivel'
+                ? '#34c759'
+                : item.status === 'alugado'
+                  ? '#ff3b30'
+                  : '#ccc',
+            borderWidth: 2,
+          }]}>
             <Text style={styles.itemText}>
               Modelo: {item.modelo}
             </Text>
@@ -189,10 +208,10 @@ export default function Home({ navigation }) {
               >
                 <Icon name="edit" size={20} color="#fff" />
               </TouchableOpacity>
-              <Icon name="edit" size={20} color="#fff" />
             </View>
           </View>
         )
+
         }
       />
       < TouchableOpacity
@@ -301,7 +320,7 @@ const styles = StyleSheet.create({
   floatingButton: {
     position: 'absolute',
     bottom: 30,
-    right: 30,
+    left: 30,
     backgroundColor: '#007AFF',
     width: 56,
     height: 56,

@@ -4,7 +4,7 @@ export const fetchCar = async (setRegistros) => {
   try {
     const response = await fetch(`${API_BASE_URL}veiculo`);
     const data = await response.json();
-    setRegistros(data.data);
+    setRegistros(data.data.map(v => ({ ...v })));
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
     throw error;
@@ -59,11 +59,18 @@ export const updateCar = async (id, updatedCar, navigation) => {
 
 export const rentCar = async (id) => {
   try {
-    await fetch(`${API_BASE_URL}veiculo/${id}`, {
+    const response = await fetch(`${API_BASE_URL}veiculo/${id}`, {
       method: 'PATCH',
     });
+
+    if (!response.ok) {
+      throw new Error('Erro ao alugar ou devolver o veículo');
+    }
+
+    const updatedCar = await response.json();
+    return updatedCar;
   } catch (error) {
     console.error('Erro ao alugar:', error);
-    alert('Erro ao alugar. Tente novamente.');
+    throw error;
   }
 };
