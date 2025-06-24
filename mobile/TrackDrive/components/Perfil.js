@@ -3,20 +3,40 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { auth } from '../components/Firebase'; 
+import { auth } from '../components/Firebase';
+import { CommonActions } from '@react-navigation/native';
 
-export default function Perfil() {
-  const [user, setUser] = useState(null);
+
+export default function Perfil({ navigation, setUser }) {
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    setUser(currentUser);
+    const user = auth.currentUser;
+    setCurrentUser(user);
   }, []);
 
-  if (!user) {
+  // no logout, chame o setUser que veio das props para limpar o estado de login global
+  const handleLogout = () => {
+    Alert.alert(
+      'Confirmação',
+      'Tem certeza de que deseja sair?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Sair',
+          onPress: () => {
+            setUser(''); // esse setUser é o prop, que limpa o login global
+          },
+        },
+      ]
+    );
+  };
+
+  if (!currentUser) {
     return (
       <View style={styles.container}>
         <Text>Carregando dados do usuário...</Text>
@@ -30,7 +50,7 @@ export default function Perfil() {
 
       <View style={styles.profileImageContainer}>
         <Image
-          source={require('../assets/car.png')} 
+          source={require('../assets/car.png')}
           style={styles.profileImage}
         />
       </View>
@@ -39,18 +59,23 @@ export default function Perfil() {
         <View style={styles.infoBox}>
           <Text style={styles.label}>Nome</Text>
           <Text style={styles.value}>
-            {user.displayName ? user.displayName : 'Nome não definido'}
+            {currentUser.displayName ? currentUser.displayName : 'Nome não definido'}
           </Text>
         </View>
 
         <View style={styles.infoBox}>
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{user.email}</Text>
+          <Text style={styles.value}>{currentUser.email}</Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Editar Perfil</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}
+        onPress={() => handleLogout()}>
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
@@ -111,6 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
     elevation: 4,
+    margin: 10
   },
   buttonText: {
     color: '#fff',

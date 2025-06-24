@@ -27,7 +27,7 @@ function PublicRoutes({ setUser }) {
 }
 
 // Telas privadas (com login)
-function TabRoutes() {
+function TabRoutes({ setUser }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -47,15 +47,19 @@ function TabRoutes() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Cadastro" component={Cadastro} />
-      <Tab.Screen name="Perfil" component={Perfil} />
+      <Tab.Screen name="Perfil">
+        {props => <Perfil {...props} setUser={setUser} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-function PrivateRoutes() {
+function PrivateRoutes({ setUser }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Tabs" component={TabRoutes} />
+      <Stack.Screen name="Tabs">
+        {props => <TabRoutes {...props} setUser={setUser} />}
+      </Stack.Screen>
       <Stack.Screen name="Atualizar" component={Atualizar} />
     </Stack.Navigator>
   );
@@ -68,7 +72,7 @@ export default function Rotas() {
   return (
     <NavigationContainer>
       {user ? (
-        <PrivateRoutes />
+        <PrivateRoutes setUser={setUser} />
       ) : (
         <PublicRoutes setUser={setUser} />
       )}

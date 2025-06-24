@@ -15,7 +15,6 @@ export default function Track({ navigation, setUser }) {
 
     try {
       await signInWithEmailAndPassword(auth, email, senha);
-      Alert.alert('Sucesso', 'Login efetuado!');
       setUser('usuario123'); // isso já muda as rotas
     } catch (error) {
       Alert.alert('Erro no login', error.message);
