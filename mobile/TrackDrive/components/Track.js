@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../components/Firebase'; 
+import { auth } from '../components/Firebase';
 
-export default function Track({ navigation }) {
+export default function Track({ navigation, setUser }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
@@ -12,10 +12,11 @@ export default function Track({ navigation }) {
       Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
+
     try {
       await signInWithEmailAndPassword(auth, email, senha);
       Alert.alert('Sucesso', 'Login efetuado!');
-      navigation.navigate('Home'); 
+      setUser('usuario123'); // isso já muda as rotas
     } catch (error) {
       Alert.alert('Erro no login', error.message);
     }

@@ -22,7 +22,7 @@ export default function CadastroP({ navigation }) {
     try {
       await createUserWithEmailAndPassword(auth, email, senha);
       Alert.alert('Sucesso', 'Usuário cadastrado!');
-      navigation.navigate('Login');
+      navigation.navigate('Home');
     } catch (error) {
       Alert.alert('Erro ao cadastrar', error.message);
     }
