@@ -101,6 +101,11 @@ export default function Perfil({ user, setUser }) {
           <Text style={styles.value}>{user.user.uid}</Text>
         </View>
 
+        <View style={styles.infoBox}>
+          <Text style={styles.label}>URL</Text>
+          <Text style={styles.value}>{userData.imageURL}</Text>
+        </View>
+
         {userData.bio ? (
           <View style={styles.infoBox}>
             <Text style={styles.label}>Bio</Text>
@@ -108,10 +113,6 @@ export default function Perfil({ user, setUser }) {
           </View>
         ) : null}
       </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Editar Perfil</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, { backgroundColor: '#FF3B30' }]} onPress={handleLogout}>
         <Text style={styles.buttonText}>Logout</Text>

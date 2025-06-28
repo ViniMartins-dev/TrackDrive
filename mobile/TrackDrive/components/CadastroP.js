@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, Image, TextInput, SafeAreaView } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { auth, db } from '../components/Firebase';
 
@@ -24,13 +24,14 @@ export default function CadastroP({ navigation, setUser }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
       Alert.alert('Sucesso', 'Usuário cadastrado!');
-      const user = userCredential.user;
+      const userId = userCredential.user;
+      const user = await signInWithEmailAndPassword(auth, email, senha);
       setUser(user);
 
-      await setDoc(doc(db, 'usuario', user.uid), {
+      await setDoc(doc(db, 'usuario', userId.uid), {
       name: nome,
       email: email,
-      imageURL: "",
+      imageURL: null,
       createdAt: new Date(),
     });
     } catch (error) {
