@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import { db } from '../components/Firebase';
 import { getDoc, doc } from 'firebase/firestore';
@@ -75,49 +76,51 @@ export default function Perfil({ user, setUser }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Perfil</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Perfil</Text>
 
-      <View style={styles.profileImageContainer}>
-        <Image
-          source={require('../assets/car.png')}
-          style={styles.profileImage}
-        />
-      </View>
-
-      <View style={styles.infoContainer}>
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>Nome</Text>
-          <Text style={styles.value}>{userData.name || 'Nome não definido'}</Text>
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={require('../assets/car.png')}
+            style={styles.profileImage}
+          />
         </View>
 
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{userData.email || 'Email não definido'}</Text>
-        </View>
-
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>Uid</Text>
-          <Text style={styles.value}>{user.user.uid}</Text>
-        </View>
-
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>URL</Text>
-          <Text style={styles.value}>{userData.imageURL}</Text>
-        </View>
-
-        {userData.bio ? (
+        <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
-            <Text style={styles.label}>Bio</Text>
-            <Text style={styles.value}>{userData.bio}</Text>
+            <Text style={styles.label}>Nome</Text>
+            <Text style={styles.value}>{userData.name || 'Nome não definido'}</Text>
           </View>
-        ) : null}
-      </View>
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#FF3B30' }]} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+          <View style={styles.infoBox}>
+            <Text style={styles.label}>Email</Text>
+            <Text style={styles.value}>{userData.email || 'Email não definido'}</Text>
+          </View>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.label}>Uid</Text>
+            <Text style={styles.value}>{user.user.uid}</Text>
+          </View>
+
+          <View style={styles.infoBox}>
+            <Text style={styles.label}>URL</Text>
+            <Text style={styles.value}>{userData.imageURL}</Text>
+          </View>
+
+          {userData.bio ? (
+            <View style={styles.infoBox}>
+              <Text style={styles.label}>Bio</Text>
+              <Text style={styles.value}>{userData.bio}</Text>
+            </View>
+          ) : null}
+        </View>
+
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#FF3B30' }]} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
