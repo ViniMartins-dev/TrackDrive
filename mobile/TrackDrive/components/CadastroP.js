@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity, Image, TextInput, SafeAreaView } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../components/Firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../components/Firebase';
 
-export default function CadastroP({ navigation }) {
+export default function CadastroP({ navigation, setUser }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confSenha, setConfSenha] = useState('');
+  const [nome, setNome] = useState('');
 
   const handleCadastro = async () => {
-    if (!email || !senha || !confSenha) {
+    if (!email || !senha || !confSenha || !nome) {
       Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
@@ -20,9 +22,18 @@ export default function CadastroP({ navigation }) {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, senha);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
       Alert.alert('Sucesso', 'Usuário cadastrado!');
-      navigation.navigate('Home');
+      const userId = userCredential.user;
+      const user = await signInWithEmailAndPassword(auth, email, senha);
+      setUser(user);
+
+      await setDoc(doc(db, 'usuario', userId.uid), {
+      name: nome,
+      email: email,
+      imageURL: null,
+      createdAt: new Date(),
+    });
     } catch (error) {
       Alert.alert('Erro ao cadastrar', error.message);
     }
@@ -64,6 +75,14 @@ export default function CadastroP({ navigation }) {
           onChangeText={setConfSenha}
           placeholderTextColor="#8e8e93"
           secureTextEntry
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Nome"
+          value={nome}
+          onChangeText={setNome}
+          placeholderTextColor="#8e8e93"
         />
 
         <TouchableOpacity style={styles.button} onPress={handleCadastro}>
