@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>TrackDrive</title>
+    <title>Dashboard</title>
 </head>
 <header>
     <div>
@@ -12,19 +12,18 @@
     </div>
 </header>
 <body>
-    <div>
-        <h1>Seja bem vindo ao TrackDrive!</h1>
-        <p>Somos uma plataforma que gerencia seus veículos</p>
+    <div class="Veiculos">
+        @foreach ($veiculos as $veiculo)
+            <div class="CardVeiculo">
+                <h1>{{ $veiculo['modelo'] }}</h1>
+                <p>Montadora: {{ $veiculo['montadora'] }}</p>
+                <p>Ano: {{ $veiculo['ano'] }}</p>
+                <p>Cor: {{ $veiculo['cor'] }}</p>
+                <p>Placa: {{ $veiculo['placa'] }}</p>
+            </div>
+        @endforeach
     </div>
-
-    <div>
-        <ul>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/cadastro">Cadastro</a></li>
-            <li><a href="/dashboard">API</a></li>
-        </ul>
-    </div>
-    <style>
+        <style>
         body {
             background-color: #b3ecff;
             font-family: Arial, sans-serif;
@@ -62,6 +61,21 @@
             color: #007acc;
             text-decoration: underline;
             font-size: 1.8rem;
+        }
+        .CardVeiculo {
+            background-color:rgba(255, 255, 255, 0.8);
+            box-shadow: 15px 15px 20px 0px rgba(0,0,0,0.1);
+            width: '30%';
+            height: '20%';
+            flex: 1;
+            border-radius: 15px;
+        }
+        .Veiculos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
         }
     </style>
 </body> 
