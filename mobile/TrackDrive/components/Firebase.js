@@ -1,6 +1,7 @@
 // Firebase App (modular)
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // ⚠️ NÃO usar getAnalytics com Expo (não compatível fora do navegador)
 const firebaseConfig = {
@@ -14,7 +15,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export { auth };
+export { auth, db };
 
 

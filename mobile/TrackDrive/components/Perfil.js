@@ -6,20 +6,58 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import { auth } from '../components/Firebase';
-import { CommonActions } from '@react-navigation/native';
+import { db } from '../components/Firebase';
+import { getDoc, doc } from 'firebase/firestore';
 
-
-export default function Perfil({ navigation, setUser }) {
-  const [currentUser, setCurrentUser] = useState(null);
+export default function Perfil({ user, setUser }) {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    setCurrentUser(user);
-  }, []);
+    const fetchUserData = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+      console.log('UID do usuário:', user.user.uid);
+      try {
+        const docRef = doc(db, 'usuario', user.user.uid);
+        const docSnap = await getDoc(docRef);
 
-  // no logout, chame o setUser que veio das props para limpar o estado de login global
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
+        } else {
+          console.log('Nenhum documento encontrado para esse usuário');
+        }
+      } catch (error) {
+        console.log('Erro ao buscar dados:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text>Carregando dados do usuário...</Text>
+      </View>
+    );
+  }
+
+  if (!userData) {
+    return (
+      <View style={styles.container}>
+        <Text>Usuário não encontrado.</Text>
+      </View>
+    );
+  }
+
   const handleLogout = () => {
     Alert.alert(
       'Confirmação',
@@ -29,20 +67,12 @@ export default function Perfil({ navigation, setUser }) {
         {
           text: 'Sair',
           onPress: () => {
-            setUser(''); // esse setUser é o prop, que limpa o login global
+            setUser(null);
           },
         },
       ]
     );
   };
-
-  if (!currentUser) {
-    return (
-      <View style={styles.container}>
-        <Text>Carregando dados do usuário...</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -58,29 +88,39 @@ export default function Perfil({ navigation, setUser }) {
       <View style={styles.infoContainer}>
         <View style={styles.infoBox}>
           <Text style={styles.label}>Nome</Text>
-          <Text style={styles.value}>
-            {currentUser.displayName ? currentUser.displayName : 'Nome não definido'}
-          </Text>
+          <Text style={styles.value}>{userData.name || 'Nome não definido'}</Text>
         </View>
 
         <View style={styles.infoBox}>
           <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{currentUser.email}</Text>
+          <Text style={styles.value}>{userData.email || 'Email não definido'}</Text>
         </View>
+
+        <View style={styles.infoBox}>
+          <Text style={styles.label}>Uid</Text>
+          <Text style={styles.value}>{user.user.uid}</Text>
+        </View>
+
+        {userData.bio ? (
+          <View style={styles.infoBox}>
+            <Text style={styles.label}>Bio</Text>
+            <Text style={styles.value}>{userData.bio}</Text>
+          </View>
+        ) : null}
       </View>
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Editar Perfil</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}
-        onPress={() => handleLogout()}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: '#FF3B30' }]} onPress={handleLogout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
+// Seu StyleSheet pode continuar igual
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -136,7 +176,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
     elevation: 4,
-    margin: 10
+    margin: 10,
+    alignItems: 'center',
   },
   buttonText: {
     color: '#fff',

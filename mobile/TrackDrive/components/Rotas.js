@@ -10,6 +10,7 @@ import Cadastro from '../components/Cadastro';
 import Atualizar from '../components/Atualizar';
 import CadastroP from '../components/CadastroP';
 import Perfil from '../components/Perfil';
+import PerfilEdit from './PerfilEdit';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,13 +22,15 @@ function PublicRoutes({ setUser }) {
       <Stack.Screen name="Track">
         {props => <Track {...props} setUser={setUser} />}
       </Stack.Screen>
-      <Stack.Screen name="CadastroP" component={CadastroP} />
+      <Stack.Screen name="CadastroP">
+         {props=> <CadastroP {...props} setUser={setUser} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
 
 // Telas privadas (com login)
-function TabRoutes({ setUser }) {
+function TabRoutes({ setUser, user }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -48,19 +51,20 @@ function TabRoutes({ setUser }) {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Cadastro" component={Cadastro} />
       <Tab.Screen name="Perfil">
-        {props => <Perfil {...props} setUser={setUser} />}
+        {props => <Perfil {...props} setUser={setUser} user={user} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-function PrivateRoutes({ setUser }) {
+function PrivateRoutes({ setUser, user }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs">
-        {props => <TabRoutes {...props} setUser={setUser} />}
+        {props => <TabRoutes {...props} setUser={setUser} user={user} />}
       </Stack.Screen>
       <Stack.Screen name="Atualizar" component={Atualizar} />
+      <Stack.Screen name="PerfilEdit" component={PerfilEdit} />
     </Stack.Navigator>
   );
 }
@@ -72,7 +76,7 @@ export default function Rotas() {
   return (
     <NavigationContainer>
       {user ? (
-        <PrivateRoutes setUser={setUser} />
+        <PrivateRoutes setUser={setUser} user={user}/>
       ) : (
         <PublicRoutes setUser={setUser} />
       )}

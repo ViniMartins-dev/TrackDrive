@@ -14,8 +14,8 @@ export default function Track({ navigation, setUser }) {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, senha);
-      setUser('usuario123'); // isso já muda as rotas
+      const user = await signInWithEmailAndPassword(auth, email, senha);
+      setUser(user); // isso já muda as rotas
     } catch (error) {
       Alert.alert('Erro no login', error.message);
     }
