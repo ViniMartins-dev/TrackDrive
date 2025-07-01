@@ -25,12 +25,12 @@ class VeiculosController extends Controller
 
     public function MostrarVeiculo($id)
     {
-        $uriApi = 'https://webapptech.site/apitrackdrive/api/veiculo' . $id;
+        $uriApi = 'https://webapptech.site/apitrackdrive/api/veiculo/' . $id; // Corrigido aqui
         $response = Http::get($uriApi);
 
         if ($response->successful()) {
-            $veiculos = $response->json()['data'];
-            return view('veiculos.show', compact('veiculos'));
+            $veiculo = $response->json()['data'];
+            return view('veiculos.editar', compact('veiculo'));
         } else {
             return response()->json([
                 'message' => 'Veiculo não encontrado.',
@@ -39,7 +39,7 @@ class VeiculosController extends Controller
         }
     }
 
-    public function CriarVeiculo()
+    public function CriarVeiculo(Request $request)
     {
         $uriApi = 'https://webapptech.site/apitrackdrive/api/veiculo';
 
@@ -51,33 +51,50 @@ class VeiculosController extends Controller
             "placa" => $request->placa,
         ]);
 
-        
+        if ($response->successful()) {
+            return redirect()->route('dashboard')->with('success', 'Veículo cadastrado com sucesso!');
+        } else {
+            return back()->withErrors([
+                'message' => 'Erro ao cadastrar veículo.',
+                'error' => $response->body()
+            ]);
+        }
     }
 
-    public function store(Request $request)
+    public function EditarVeiculo(Request $request, $id)
     {
-        // Lógica para armazenar um novo veículo
-        // Validar e salvar os dados do veículo
-        return redirect()->route('veiculos.index');
+        $urlApi = 'https://webapptech.site/apitrackdrive/api/veiculo/' . $id;
+        $response = Http::put($urlApi, [
+            'modelo' => $request->modelo,
+            'montadora' => $request->montadora,
+            'ano' => $request->ano,
+            'cor' => $request->cor,
+            'placa' => $request->placa,
+        ]);
+
+        if ($response->successful()) {
+            // Redireciona para a página anterior
+            return redirect()->route('dashboard')->with('success', 'Produto atualizado com sucesso!');
+        } else {
+            return back()->withErrors([
+                'message' => 'Erro ao atualizar o produto',
+                'error' => $response->body(),
+            ]);
+        }
     }
 
-
-    public function edit($id)
+    public function DeletarVeiculo($id)
     {
-        // Lógica para mostrar o formulário de edição de veículo
-        return view('veiculos.edit', compact('id'));
-    }
+        $urlApi = 'https://webapptech.site/apitrackdrive/api/veiculo/' . $id;
+        $response = Http::delete($urlApi);
 
-    public function update(Request $request, $id)
-    {
-        // Lógica para atualizar um veículo específico
-        // Validar e atualizar os dados do veículo
-        return redirect()->route('veiculos.index');
-    }
-
-    public function destroy($id)
-    {
-        // Lógica para excluir um veículo específico
-        return redirect()->route('veiculos.index');
+        if ($response->successful()) {
+            return redirect()->route('dashboard')->with('success', 'Veículo deletado com sucesso!');
+        } else {
+            return redirect()->route('dashboard')->withErrors([
+                'message' => 'Erro ao deletar o veículo.',
+                'error' => $response->body(),
+            ]);
+        }
     }
 }
