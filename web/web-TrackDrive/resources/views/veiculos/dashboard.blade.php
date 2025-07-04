@@ -8,12 +8,13 @@
 <body>
     <header>
         <div>TrackDrive</div>
-        <div class="BotaoCriar">
+        <div>
             <a href="{{ route('veiculos.criar.form') }}">
-                <img src="https://cdn-icons-png.flaticon.com/128/4316/4316188.png" alt="Criar Veículo" />
+                <img class="botaoCriar"src="https://cdn-icons-png.flaticon.com/128/4316/4316188.png" alt="Criar Veículo" />
             </a>
         </div>
     </header>
+    {{Session::get('firebase_user')['email']}}
     <div class="Veiculos">
         @foreach ($veiculos as $veiculo)
             <div class="CardVeiculo">
@@ -53,6 +54,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 5vw;
         }
         h1 {
             text-align: center;
@@ -102,10 +104,10 @@
         .BotoesContainer a img:hover {
             opacity: 0.7;
         }
-
         .botaoCriar {
-            width: 3vw;
-            height: 3vw;
+            width: 4vw;
+            height: 4vw;
+            margin-top: 1vw;
         }
     </style>
 </html>

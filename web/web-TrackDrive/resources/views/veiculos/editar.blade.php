@@ -9,15 +9,19 @@
             background-color: #b3ecff;
             font-family: Arial, sans-serif;
         }
-        header div {
+        header{
             text-align: center;
             font-weight: bold;
-            padding: 1rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
             background-color: #00ace6;
             color: white;
             border-radius: 15px;
-            font-size: 3rem;
-            text-decoration: underline;
+            font-size: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5vw;
         }
         .EditarVeiculo {
             background-color: rgba(255, 255, 255, 0.8);

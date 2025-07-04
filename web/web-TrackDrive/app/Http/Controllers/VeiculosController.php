@@ -73,7 +73,6 @@ class VeiculosController extends Controller
         ]);
 
         if ($response->successful()) {
-            // Redireciona para a página anterior
             return redirect()->route('dashboard')->with('success', 'Produto atualizado com sucesso!');
         } else {
             return back()->withErrors([

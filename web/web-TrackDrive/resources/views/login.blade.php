@@ -1,86 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Login - TrackDrive</title>
+    <header> 
+        <div>TrackDrive</div>
+    </header>
 </head>
-<header>
-    <div>
-        TrackDrive
-    </div>
-</header>
 <body>
     <h1>Login</h1>
-    <form action="/login" method="POST">
-        <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Entrar</button>
-    </form>
+    <div class="Card">
+        <form method="POST" action="{{ route('login.post') }}">
+            @csrf
+            <label>Email:</label><br>
+            <input type="email" name="email" required><br><br>
+            <label>Senha:</label><br>
+            <input type="password" name="password" required><br><br>
+            <button type="submit">Entrar</button>
+        </form>
+        <p>Não tem uma conta? <a href="{{ route('register.form') }}">Cadastre-se aqui</a></p>
+    </div>
+        @if($errors->any())
+        <p style="color:red;">{{ $errors->first() }}</p>
+        @endif
 </body>
-    <style>
+<style>
         body {
             background-color: #b3ecff;
             font-family: Arial, sans-serif;
         }
-        header div {
+        header{
             text-align: center;
             font-weight: bold;
-            padding: 1rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
             background-color: #00ace6;
             color: white;
             border-radius: 15px;
-            font-size: 3rem;
-            text-decoration: underline;
+            font-size: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5vw;
         }
         h1 {
             text-align: center;
             font-size: 2.5rem;
-            margin-top: 2rem;
+            text-decoration: underline;
         }
-        form {
-            max-width: 400px;
-            margin: 2rem auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        .Veiculos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
         }
-        form div {
-            margin-bottom: 1rem;
+        .CardVeiculo {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 15px 15px 20px 0px rgba(0,0,0,0.1);
+            width: 100%;
+            border-radius: 15px;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+        .TituloVeiculo {
+            text-decoration: underline;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        .DivVeiculo {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .BotoesContainer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .BotoesContainer a img {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .BotoesContainer a img:hover {
+            opacity: 0.7;
+        }
+
+        .botaoCriar {
+            width: 3vw;
+            height: 3vw;
+        }
+        .Card {
+            background-color: rgba(255, 255, 255, 0.8);
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 15px 15px 20px 0 rgba(0,0,0,0.1);
+            justify-content: center;   
+            align-items: center; 
         }
         input {
-            width: 95%;
-            padding: 0.5rem;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            align: center;
-            font-size: 1.2rem;
+            width: 100%;
+            border-width: 1px;
+            border-radius: 7px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 5px;
         }
         button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #00ace6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
+            border-width: 1px;
+            border-radius: 7px;
         }
-        button:hover {
-            background-color: #007acc;
-        }
-    </style>
+</style>
 </html>
