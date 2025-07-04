@@ -14,7 +14,6 @@
             </a>
         </div>
     </header>
-    {{Session::get('firebase_user')['email']}}
     <div class="Veiculos">
         @foreach ($veiculos as $veiculo)
             <div class="CardVeiculo">
